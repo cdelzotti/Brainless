@@ -1,0 +1,23 @@
+
+    {
+        "nom" : "Localisation de ville en Europe par rapport à la Belgique",
+        "elements" : [
+            {
+                "value" : "Luxembourg",
+                "answer" : "Sud"
+            },
+            {
+                "value" : "Paris",
+                "answer" : "Ouest"
+            },
+            {
+                "value" : "Berlin",
+                "answer" : "Est"
+            },
+            {
+                "value" : "Amsterdam",
+                "answer" : "Nord"
+            }
+        ]
+    }
+    
