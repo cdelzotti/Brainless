@@ -38,7 +38,7 @@ def createCollectionExample():
     fh = open("collections/example.json", "w+")
     fh.write("""
     {
-        "nom" : "Localisation de villes en Europe par rapport à la Belgique",
+        "name" : "Localisation de villes en Europe par rapport à la Belgique",
         "elements" : [
             {
                 "value" : "Luxembourg",
