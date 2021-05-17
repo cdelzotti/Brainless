@@ -198,9 +198,9 @@ class Rehearse:
         print("Progress: 0%")
         while len(collection["elements"]) > 0 and not leaveloop:
             rand = randint(0, len(collection["elements"]) - 1)
-            print("Find the answer to the following element : %s" % collection["elements"][rand]["value"])
+            print("Find the answer to the following element :\n\n\t--> %s" % collection["elements"][rand]["value"])
             input("\n")
-            print("The answer is : %s" % collection["elements"][rand]["answer"])
+            print("The answer is : \n\n%s\n" % collection["elements"][rand]["answer"])
             response = ""
             while response not in ("yes", "no", "quit"):
                 response = input("Did you have the right answer ? (yes, no, quit) :")
