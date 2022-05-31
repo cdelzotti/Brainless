@@ -79,15 +79,21 @@ def collectionCheck():
     """
     if not os.path.isdir("collections"):
         os.mkdir("collections")
-    if not os.path.isfile("collections/example.json"):
+    if len(os.listdir("collections")) == 0:
         createCollectionExample()
     # Check if collections have differents names
     names = []
     for collectionfile in os.listdir("collections"):
+        if collectionfile == "all.json":
+            # Throw an exception if all.json is found
+            gentlycrash("You have an 'all.json' file in collections folder.\nPlease just rename it.")
         collection = getCollectionContent("collections/%s" % collectionfile)
         for element in names:
             if element["name"] == collection["name"]:
                 gentlycrash("'%s' and '%s' have the same value in their name field : '%s'" % (collectionfile, element["file"], collection["name"]))
+        if collection["name"] == "All":
+            # Throw an exception if all is found
+            gentlycrash(f"You have a collection called 'All' in your collections ({collectionfile}).\nAll is a reserved name, please change it.")
         names.append({
             "name" : collection["name"],
             "file" : collectionfile

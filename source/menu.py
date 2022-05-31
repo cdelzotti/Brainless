@@ -221,10 +221,24 @@ class Rehearse:
         return self.parent
 
     def parseCollection(self):
-        fh = open(self.filepath, "r")
-        content = fh.read()
-        fh.close()
-        return json.loads(content)
+        # If filepath is simply a string
+        if isinstance(self.filepath, str):
+            fh = open(self.filepath, "r")
+            content = fh.read()
+            fh.close()
+            return json.loads(content)
+        # If filepath is a list
+        else:
+            collection = {
+                "name" : "all",
+                "elements" : []
+            }
+            for file in self.filepath:
+                fh = open(file, "r")
+                content = fh.read()
+                fh.close()
+                collection["elements"] += json.loads(content)["elements"]
+            return collection
 
     def addCache(self, value, status):
         fh = open(self.cachepath, "a+")
