@@ -21,11 +21,12 @@ for collection in collections:
         Statistics(cachepath)
     ], "Choose an option"))
 # Add a final Menu node with all entries
-rehearse = Rehearse("Rehearse all", allpaths, "cache/all.cache")
-menuItems.append(Menu("All", [
-    rehearse,
-    Statistics("cache/all.cache")
-], "Choose an option"))
+if len(allpaths) > 1:
+    rehearse = Rehearse("Rehearse all", allpaths, "cache/all.cache")
+    menuItems.append(Menu("All", [
+        rehearse,
+        Statistics("cache/all.cache")
+    ], "Choose an option"))
 
 brainless = Brainless(Menu("root", menuItems, "Choose a collection"))
 clear()
