@@ -1,8 +1,8 @@
 import json
-import matplotlib.pyplot as plt
-import numpy as np
-from random import randint
+from random import randint, shuffle
 from os import system, name, path
+
+from pytools import average
 
 
 def clear():
@@ -114,7 +114,7 @@ class Statistics:
 
     def draw(self):
         """
-        For each entry in the cache, print its value and success rate. Then show a plot.
+        For each entry in the cache, print its value and success rate.
 
         Return:
         -------
@@ -133,23 +133,27 @@ class Statistics:
         for line in lines:
             # Retreive line infos
             line = line.strip("\n").split(" ")
+            # Extract result
+            result = line[-1]
+            # Join the rest
+            question = " ".join(line[:-1])
             found = False
             # Checks if not already present
             for i in range(len(status)):
-                if status[i]["name"] == line[0]:
+                if status[i]["name"] == question:
                     found = True
-                    if line[1].upper() == "SUCCESS":
+                    if result.upper() == "SUCCESS":
                         status[i]["success"] += 1
                     else:
                         status[i]["fail"] += 1
             # If not already present
             if not found:
                 status.append({
-                    "name" : line[0],
+                    "name" : question,
                     "fail" : 0,
                     "success" : 0
                 })
-                if line[1].upper() == "SUCCESS":
+                if result.upper() == "SUCCESS":
                     status[-1]["success"] += 1
                 else:
                     status[-1]["fail"] += 1
@@ -159,28 +163,15 @@ class Statistics:
         for element in status:
             labels.append(element["name"])
             values.append(element["success"]/(element["success"] + element["fail"])*100)
-            print("%s : %d %% success" % (element["name"], element["success"]/(element["success"] + element["fail"])*100))
-        print()
-        # Show plot
-        self.plot(labels, values)
+        # Sort the list
+        values, labels = (list(t) for t in zip(*sorted(zip(values, labels))))
+        # Print the list
+        for i in range(len(labels)):
+            print("%s : %d%%" % (labels[i], values[i]))
+        average_rate = average(values)
+        print(f"\nAverage score : {average_rate:.2f}%\n")
         # Go back to parent
         return self.parent
-
-    def plot(self,labels, values):
-        """
-        Print a bar plot
-
-        parameters:
-        -----------
-        labels (list) : a list of labels
-        values (list of numbers) : a list of value corresponding to `labels
-        """
-        y_pos = np.arange(len(labels))
-        plt.bar(y_pos, values, align='center', alpha=0.5)
-        plt.xticks(y_pos, labels)
-        plt.ylabel('% of success')
-        plt.title('Items')
-        plt.show()
 
 class Rehearse:
     def __init__(self,name, path, cache, parent=None):
@@ -197,6 +188,7 @@ class Rehearse:
         clear()
         print("Progress: 0%")
         while len(collection["elements"]) > 0 and not leaveloop:
+            shuffle(collection["elements"])
             rand = randint(0, len(collection["elements"]) - 1)
             print("Find the answer to the following element :\n\n\t--> %s" % collection["elements"][rand]["value"])
             input("\n")
